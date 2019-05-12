@@ -14,7 +14,8 @@ ENT.Model = "models/roach_nzu/re2/tyrant.mdl"	-- Our model.
 ENT.health = 500000								-- Our health.
 ENT.Speed = 105									-- How fast we move.
 ENT.WalkAnim = "0200"
-ENT.NumRoundsWait = 2 -- NZU Var: How many rounds do we wait before getting back up again? Once deaded.
+-- NZU Var: How many rounds do we wait before getting back up again? Once deaded.
+ENT.NumRoundsWait = nzu.Extension().Settings.NumRounds
 
 --[[-------------------------------------------------------]]--
 -- nzu hooking :)
@@ -53,7 +54,7 @@ function ENT:CustomInit()
 	self.CanTaunt = false
 	self.CanFlinch = false
 	self.ShotOffHat = false
-	self.HiddenHealth = 5000
+	self.HiddenHealth = nzu.Extension().Settings.Health
 	self.CanCommitDie = false
 	self.IsDead = false
 	self.IsPlayingGesture = false
@@ -240,7 +241,7 @@ function ENT:OnInjured(dmginfo)
 		if IsValid(dmginfo:GetAttacker()) then
 			dmginfo:GetAttacker():GivePoints(500,"ZombieKill",self)
 		end
-		self.HiddenHealth = 5000
+		self.HiddenHealth = nzu.Extension().Settings.Health
 		if self.PissedOff then
 			self:DoChangeWalk()
 			self.PissedOff = false
