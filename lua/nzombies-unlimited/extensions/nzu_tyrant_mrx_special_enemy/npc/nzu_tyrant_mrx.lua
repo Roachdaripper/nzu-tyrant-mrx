@@ -15,8 +15,7 @@ ENT.health = 500000								-- Our health.
 ENT.Speed = 105									-- How fast we move.
 ENT.WalkAnim = "0200"
 -- NZU Var: How many rounds do we wait before getting back up again? Once deaded.
-FUCKSETTINGS = nzu.GetExtension("Mr. X")
-ENT.NumRoundsWait = FUCKSETTINGS and FUCKSETTINGS.Settings and FUCKSETTINGS.Settings.NumRounds or 2
+local EXT = nzu.Extension("nzu_tyrant_mrx_special_enemy")
 
 --[[-------------------------------------------------------]]--
 -- nzu hooking :)
@@ -27,7 +26,7 @@ ENT.CurrentRound = 1
 function ENT:RoundCheck(newround)
 	self.CurrentRound = newround
 	if self.IsDead then
-		if (self.OldRound+self.NumRoundsWait) <= newround then
+		if (self.OldRound+(EXT and EXT.Settings and EXT.Settings.NumRounds or 2)) <= newround then
 			self.CanGetUpNow = true
 			self.OldRound = newround
 		else
@@ -55,7 +54,7 @@ function ENT:CustomInit()
 	self.CanTaunt = false
 	self.CanFlinch = false
 	self.ShotOffHat = false
-	self.HiddenHealth = FUCKSETTINGS and FUCKSETTINGS.Settings and FUCKSETTINGS.Settings.StartHealth or 5000
+	self.HiddenHealth = EXT and EXT.Settings and EXT.Settings.StartHealth or 5000
 	self.CanCommitDie = false
 	self.IsDead = false
 	self.IsPlayingGesture = false
@@ -208,7 +207,7 @@ function ENT:OnInjured(dmginfo)
 			-- Might be broken, since X boy has a lot of health and you can just keep unloading into him for free points.
 			local hitgroup = dmginfo:GetAttacker():GetEyeTrace().HitGroup
 			if hitgroup == HITGROUP_HEAD and not self.ShotOffHat then
-				dmginfo:GetAttacker():GivePoints(50,"ZombieHit",self)
+				dmginfo:GetAttacker():GivePoints(EXT and EXT.Settings and EXT.Settings.PointsHat or 50,"ZombieHit",self)
 				-- Give a cheeky 50 points for scoring his hat.
 				self:SetBodygroup(2,1)
 				local hat = ents.Create("prop_physics")
@@ -240,9 +239,9 @@ function ENT:OnInjured(dmginfo)
 	dmginfo:ScaleDamage(0)
 	if self.HiddenHealth <= 0 then
 		if IsValid(dmginfo:GetAttacker()) then
-			dmginfo:GetAttacker():GivePoints(500,"ZombieKill",self)
+			dmginfo:GetAttacker():GivePoints(EXT and EXT.Settings and EXT.Settings.PointsTakedown or 500,"ZombieKill",self)
 		end
-		self.HiddenHealth = FUCKSETTINGS and FUCKSETTINGS.Settings and FUCKSETTINGS.Settings.StartHealth or 5000
+		self.HiddenHealth = EXT and EXT.Settings and EXT.Settings.StartHealth or 5000
 		if self.PissedOff then
 			self:DoChangeWalk()
 			self.PissedOff = false

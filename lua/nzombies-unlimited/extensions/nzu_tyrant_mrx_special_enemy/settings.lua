@@ -9,6 +9,16 @@ local settings = {
 		Type = "Number",
 		Default = 2,
 		Parse = function(n) return math.Round(n) end
+	},
+	["PointsHat"] = {
+		Type = "Number",
+		Default = 50,
+		Parse = function(n) return math.Round(n) end
+	},
+	["PointsTakedown"] = {
+		Type = "Number",
+		Default = 500,
+		Parse = function(n) return math.Round(n) end
 	}
 }
 
@@ -17,7 +27,9 @@ if CLIENT then
 
 	local labelledsettings = {
 		{"StartHealth", "Starting Health"},
-		{"NumRounds", "Rounds to stay down for"}
+		{"NumRounds", "Rounds to stay down for"},
+		{"PointsHat", "Num. Points for shooting off hat"},
+		{"PointsTakedown", "Num. Points for taking down"}
 	}
 
 	local panelfunc = function(p, SettingPanel)
