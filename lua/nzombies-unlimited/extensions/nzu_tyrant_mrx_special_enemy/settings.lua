@@ -1,11 +1,11 @@
 
 local settings = {
 	["Health"] = {
-		Type = TYPE_NUMBER,
+		Type = "Number",
 		Default = 5000,
 	},
 	["NumRounds"] = {
-		Type = TYPE_NUMBER,
+		Type = "Number",
 		Default = 2,
 	}
 }
