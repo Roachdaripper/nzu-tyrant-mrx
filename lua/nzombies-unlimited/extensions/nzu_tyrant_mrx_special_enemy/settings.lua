@@ -1,12 +1,14 @@
 
 local settings = {
-	["Health"] = {
+	["StartHealth"] = {
 		Type = "Number",
 		Default = 5000,
+		Parse = function(n) return math.Round(n) end
 	},
 	["NumRounds"] = {
 		Type = "Number",
 		Default = 2,
+		Parse = function(n) return math.Round(n) end
 	}
 }
 
@@ -14,7 +16,7 @@ if CLIENT then
 	-- Pre-register these as their files are located in the gamemode, not appearing in sandbox
 
 	local labelledsettings = {
-		{"Health", "Starting Health"},
+		{"StartHealth", "Starting Health"},
 		{"NumRounds", "Rounds to stay down for"}
 	}
 

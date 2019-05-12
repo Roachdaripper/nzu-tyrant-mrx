@@ -15,7 +15,8 @@ ENT.health = 500000								-- Our health.
 ENT.Speed = 105									-- How fast we move.
 ENT.WalkAnim = "0200"
 -- NZU Var: How many rounds do we wait before getting back up again? Once deaded.
-ENT.NumRoundsWait = nzu.Extension().Settings.NumRounds
+FUCKSETTINGS = nzu.GetExtension("Mr. X")
+ENT.NumRoundsWait = FUCKSETTINGS and FUCKSETTINGS.Settings and FUCKSETTINGS.Settings.NumRounds or 2
 
 --[[-------------------------------------------------------]]--
 -- nzu hooking :)
@@ -54,7 +55,7 @@ function ENT:CustomInit()
 	self.CanTaunt = false
 	self.CanFlinch = false
 	self.ShotOffHat = false
-	self.HiddenHealth = nzu.Extension().Settings.Health
+	self.HiddenHealth = FUCKSETTINGS and FUCKSETTINGS.Settings and FUCKSETTINGS.Settings.StartHealth or 5000
 	self.CanCommitDie = false
 	self.IsDead = false
 	self.IsPlayingGesture = false
@@ -184,15 +185,15 @@ end
 function ENT:CustomIdle()end
 function ENT:CustomRunBehaviour()end
 if SERVER then
-	-- Collide When Possible
-	local collidedelay = 0.1
-	local bloat = Vector(5,5,0)
-	function ENT:Think()
-		if not self.NextCollideCheck or self.NextCollideCheck < CurTime() then
-			self:SetSolidMask(MASK_NPCSOLID)
-			self.NextCollideCheck = CurTime() + collidedelay
-		end
-	end
+	-- -- Collide When Possible
+	-- local collidedelay = 0.1
+	-- local bloat = Vector(5,5,0)
+	-- function ENT:Think()
+		-- if not self.NextCollideCheck or self.NextCollideCheck < CurTime() then
+			-- self:SetSolidMask(MASK_NPCSOLID)
+			-- self.NextCollideCheck = CurTime() + collidedelay
+		-- end
+	-- end
 end
 function ENT:OnKilled(dmginfo)
 	ErrorNoHalt("Tyrant [Index: "..self:EntIndex().."] just died! This shouldn't happen!")
@@ -241,7 +242,7 @@ function ENT:OnInjured(dmginfo)
 		if IsValid(dmginfo:GetAttacker()) then
 			dmginfo:GetAttacker():GivePoints(500,"ZombieKill",self)
 		end
-		self.HiddenHealth = nzu.Extension().Settings.Health
+		self.HiddenHealth = FUCKSETTINGS and FUCKSETTINGS.Settings and FUCKSETTINGS.Settings.StartHealth or 5000
 		if self.PissedOff then
 			self:DoChangeWalk()
 			self.PissedOff = false
